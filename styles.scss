@@ -1,0 +1,96 @@
+.grey-border {
+  border: 1px solid #979797;
+}
+
+.main-container {
+  font-family: "Burbank Small";
+  font-weight: bold;
+  background-color: #D8D8D8;
+  height: 470px;
+  width: 452px;
+  padding: 20px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.name {
+  font-size: 20px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.result {
+  width: 380px;
+  height: 70px;
+  background-color: #ffffff;
+  margin: 0 auto;
+  margin-bottom: 20px;
+
+  input {
+    height: inherit;
+    width: inherit;
+    font-size: 35px;
+    line-height: 70px;
+    text-align: left;
+    text-indent: 10px;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.content {
+  margin: 0 auto;
+  width: 340px;
+  height: 283px;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.digits {
+  width: 170px;
+
+  button {
+    &:nth-last-of-type(-n+3) {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.operands {
+  width: 110px;
+
+  button {
+    &:nth-last-of-type(1) {
+      width: 100%;
+    }
+  }
+}
+
+.digits, .operands {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  button {
+    width: 50px;
+    height: 43px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 32px;
+    line-height: 43px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    cursor: grab;
+    box-shadow: inset 0 0 0 1px #000000;
+    border: none;
+
+    &:hover, &:active {
+      box-shadow: inset 0 0 0 3px #cccccc;
+    }
+  }
+}
