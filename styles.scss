@@ -58,7 +58,7 @@
   }
 }
 
-.operands {
+.operators {
   width: 110px;
 
   button {
@@ -68,7 +68,7 @@
   }
 }
 
-.digits, .operands {
+.digits, .operators {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

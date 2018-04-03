@@ -1,27 +1,23 @@
-# vuecalc
+![Vue Calc](vuecalc.png)
 
-> Simple calculator with vue js
+# Vuecalc
 
-## Build Setup
+A simple calculator with Vue.js.
 
-``` bash
-# install dependencies
-npm install
+This simple calculator is just for me to get a view of Vue. ;)
 
-# serve with hot reload at localhost:8080
-npm run dev
+# What does it do?
 
-# build for production with minification
-npm run build
+* Makes very basic calculations for digits.
 
-# build for production and view the bundle analyzer report
-npm run build --report
+# What doesn't it do?
 
-# run unit tests
-npm run unit
+* Everything a calculator does that's not very basic. haha!
 
-# run all tests
-npm test
-```
+* Might also be worthy to note that the `.` and `+/-` buttons do nothing @ the moment. I think I got the basic thing I wanted already.
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+**PS**: The few/many (depending on your perspective) LOC reside in `index.html`.
+
+# Wanna checkout the calculator?
+
+Just `view` the `index.html` file in your browser! Of course, after cloning or downloading.

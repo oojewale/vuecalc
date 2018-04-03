@@ -9,7 +9,7 @@
   <body>
     <div class="main-container grey-border" id="app">
       <div class="name">VueCalc</div>
-      <div class="result"><input type="text" v-model="result" class="grey-border" readonly="true" /></div>
+      <div class="result"><input type="text" v-model="result" class="grey-border" readonly="true"></div>
       <div class="content grey-border">
         <div class="digits">
           <button v-for="number in numbers" v-on:click="updateResult(number.toString(), false)">
@@ -19,9 +19,9 @@
             {{ xter }}
           </button>
         </div>
-        <div class="operands">
-          <button v-for="edit in edits" v-on:click="operationMatcher()[edit.text]()">
-            {{ edit.text }}
+        <div class="operators">
+          <button v-for="deleteXter in deleteXters" v-on:click="operationMatcher()[deleteXter.text]()">
+            {{ deleteXter.text }}
           </button>
           <button v-for="operator in operatorsAsText" v-on:click="updateResult(operator.text, false)">
             {{ operator.text }}
@@ -40,7 +40,7 @@
       data: {
         numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
         specialXters: [".", "+/-"],
-        edits: [
+        deleteXters: [
           { text: "c" },
           { text: "del" }
         ],
@@ -63,17 +63,18 @@
         },
 
         updateResult: function(val, reset) {
-          if (reset || this.result === '0') {
-            this.result = val;
+          var result = this.result;
+          if (reset || result === '0') {
+            result = val;
           } else if (this.operatorClick && ( val === "=" || this.isOperator(val))) {
-            this.result = this.getResult(val);
+            result = this.getResult(val);
           } else if (this.isOperator(val) && !this.operatorClick) {
             this.operatorClick = true;
-            this.result += val;
+            result += val;
           } else {
-            this.result += val;
+            result += val;
           }
-          this.result = this.result.slice(0, 15);
+          this.result = result.slice(0, 15);
         },
 
         backspace: function() {
@@ -84,22 +85,24 @@
           }
 
           if (result.length < 1) result = '0';
+          this.operatorClick = false;
           this.updateResult(result, true);
         },
 
         cancel: function() {
+          this.operatorClick = false;
           this.updateResult('0', true);
         },
 
         getResult: function(val) {
           var options = {};
-          var currentResult = this.result;
+          var result = this.result;
 
           options.operator = this.operators().find(function(op) {
-            return currentResult.includes(op);
+            return result.includes(op);
           });
 
-          var operands = this.result.split(" " + options.operator + " ");
+          var operands = result.split(" " + options.operator + " ");
           options.firstValue = parseInt(operands[0]);
           options.secondValue = parseInt(operands[1]);
           if (isNaN(options.secondValue)) options.secondValue = 0;
