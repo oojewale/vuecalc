@@ -23,8 +23,11 @@
           <button v-for="edit in edits" v-on:click="operationMatcher()[edit.text]()">
             {{ edit.text }}
           </button>
-          <button v-for="operator in operators" v-on:click="updateResult(operator.text, false)">
+          <button v-for="operator in operatorsAsText" v-on:click="updateResult(operator.text, false)">
             {{ operator.text }}
+          </button>
+          <button v-on:click="updateResult('=', false)">
+            =
           </button>
         </div>
       </div>
@@ -41,23 +44,36 @@
           { text: "c" },
           { text: "del" }
         ],
-        operators: [
+        operatorsAsText: [
           { text: " + " },
           { text: " - " },
           { text: " * " },
-          { text: " / " },
-          { text: "=" }
+          { text: " / " }
         ],
-        result: ''
+        result: '',
+        operatorClick: false
       },
       methods: {
+        operators: function() {
+          return ["/", "*", "+", "-" ];
+        },
+
+        isOperator: function(val) {
+          return this.operators().includes(val.replace(/\s/g, ""));
+        },
+
         updateResult: function(val, reset) {
           if (reset || this.result === '0') {
             this.result = val;
+          } else if (this.operatorClick && ( val === "=" || this.isOperator(val))) {
+            this.result = this.getResult(val);
+          } else if (this.isOperator(val) && !this.operatorClick) {
+            this.operatorClick = true;
+            this.result += val;
           } else {
             this.result += val;
-            this.result = this.result.slice(0, 15);
           }
+          this.result = this.result.slice(0, 15);
         },
 
         backspace: function() {
@@ -75,20 +91,47 @@
           this.updateResult('0', true);
         },
 
-        getResult: function() {
-          // WIP
-          operators = ["/", "*", "+", "-" ];
-          operators.forEach(function() {
-            (this.result)
+        getResult: function(val) {
+          var options = {};
+          var currentResult = this.result;
+
+          options.operator = this.operators().find(function(op) {
+            return currentResult.includes(op);
           });
+
+          var operands = this.result.split(" " + options.operator + " ");
+          options.firstValue = parseInt(operands[0]);
+          options.secondValue = parseInt(operands[1]);
+          if (isNaN(options.secondValue)) options.secondValue = 0;
+
+          if (this.isOperator(val)) {
+            return this.calculate(options).toString() + val;
+          }
+          return this.calculate(options).toString();
         },
 
+        calculate: function(options) {
+          switch(options.operator) {
+            case "*":
+              result = options.firstValue * options.secondValue;
+              break;
+            case "/":
+              result = options.firstValue / options.secondValue;
+              break;
+            case "+":
+              result = options.firstValue + options.secondValue;
+              break;
+            case "-":
+              result = options.firstValue - options.secondValue;
+              break;
+          }
+          return result;
+        },
 
         operationMatcher: function() {
           return {
             "c": this.cancel,
-            "del": this.backspace,
-            "=": this.getResult
+            "del": this.backspace
           };
         }
       }
