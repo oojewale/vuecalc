@@ -9,10 +9,10 @@
   <body>
     <div class="main-container grey-border" id="app">
       <div class="name">VueCalc</div>
-      <div class="result"><input type="text" v-model="result" class="grey-border"></div>
+      <div class="result"><input type="text" v-model="result" class="grey-border" readonly="true" /></div>
       <div class="content grey-border">
         <div class="digits">
-          <button v-for="number in numbers" v-on:click="updateResult(number.toString())">
+          <button v-for="number in numbers" v-on:click="updateResult(number.toString(), false)">
             {{ number.toString() }}
           </button>
           <button v-for="xter in specialXters" v-on:click="updateResult(number)">
@@ -20,8 +20,11 @@
           </button>
         </div>
         <div class="operands">
-          <button v-for="operand in operands" v-on:click="backspace">
-            {{ operand.text }}
+          <button v-for="edit in edits" v-on:click="operationMatcher()[edit.text]()">
+            {{ edit.text }}
+          </button>
+          <button v-for="operator in operators" v-on:click="updateResult(operator.text, false)">
+            {{ operator.text }}
           </button>
         </div>
       </div>
@@ -34,26 +37,78 @@
       data: {
         numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
         specialXters: [".", "+/-"],
-        operands: [
-          { text: "c", operation: "cancel" },
-          { text: "del", operation: "backspace" },
-          { text: "+", operation: "plus" },
-          { text: "-", operation: "minus"},
-          { text: "X", operation: "multiplication" },
-          { text: "/", operation: "division" },
-          { text: "=", operation: "equal" }
+        edits: [
+          { text: "c" },
+          { text: "del" }
+        ],
+        operators: [
+          { text: " + " },
+          { text: " - " },
+          { text: " * " },
+          { text: " / " },
+          { text: "=" }
         ],
         result: ''
       },
       methods: {
-        updateResult: function(val) {
-          this.result = val;
+        updateResult: function(val, reset) {
+          if (reset || this.result === '0') {
+            this.result = val;
+          } else {
+            this.result += val;
+            this.result = this.result.slice(0, 15);
+          }
         },
 
         backspace: function() {
-          this.result = this.result.slice(0,-1)
-          if (this.result.length < 1) this.result = 0;
-          this.updateResult(this.result);
+          if (this.result) {
+            result = this.result.slice(0,-1);
+          } else {
+            result = '';
+          }
+
+          if (result.length < 1) result = '0';
+          this.updateResult(result, true);
+        },
+
+        cancel: function() {
+          this.updateResult('0', true);
+        },
+
+        add: function() {
+          // this.updateResult('0', true);
+          if (this.result) {
+
+          }
+        },
+
+        subtract: function() {
+
+        },
+
+        multiply: function() {
+
+        },
+
+        divide: function() {
+
+        },
+
+        getResult: function() {
+          // WIP
+          operators = ["/", "*", "+", "-" ];
+          operators.forEach(function() {
+            (this.result)
+          });
+        },
+
+
+        operationMatcher: function() {
+          return {
+            "c": this.cancel,
+            "del": this.backspace,
+            "=": this.getResult
+          };
         }
       }
     });
