@@ -103,8 +103,8 @@
           });
 
           var operands = result.split(" " + options.operator + " ");
-          options.firstValue = parseInt(operands[0]);
-          options.secondValue = parseInt(operands[1]);
+          options.firstValue = +operands[0];
+          options.secondValue = +operands[1];
           if (isNaN(options.secondValue)) options.secondValue = 0;
 
           if (this.isOperator(val)) {
